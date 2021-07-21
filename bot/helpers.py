@@ -11,6 +11,7 @@ import re
 # Basic variables
 # ==================================================
 error_title = "Whoops!"
+success_title = "Alright!"
 
 
 # ==================================================
