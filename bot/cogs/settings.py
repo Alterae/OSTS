@@ -1,3 +1,4 @@
+from typing import MappingView
 from discord.ext import commands
 from importlib import reload
 import discord
@@ -23,10 +24,13 @@ class Settings(commands.Cog, description=""):
     # ==================================================
     # Server settings
     # ==================================================
-    @commands.command(aliases=["ss"], brief="Change server-specific settings!", help=f"""\
+    @commands.command(aliases=["ss"], brief="Change server-specific settings!", help="""\
         __**Server Settings**__
         Change server-specific settings to whatever you like!
 
+        __Viewing Server Settings__
+        `os.server_settings list`
+        
         __Changing the Bot's Prefix__
         `os.server_settings prefix os.`
         `os.server_settings prefix !`
@@ -39,7 +43,7 @@ class Settings(commands.Cog, description=""):
         if server_data.get("delete_invocation") == True:
             await helpers.try_delete(ctx)
     
-        if _one == "":
+        if _one not in ["prefix", "delete_command", "list"]:
             return await helpers.give_output(
                 embed_title = f"the {re.sub(r'_', ' ', inspect.stack()[0][3])} command!",
                 embed_content = self.osts.get_command(inspect.stack()[0][3]).help,
@@ -58,7 +62,7 @@ class Settings(commands.Cog, description=""):
             return await helpers.give_output(
                 embed_title = "Alright!",
                 embed_content = f"My prefix has been changed from \"{previous_prefix}\" to \"{_two}\"!",
-                log_text = f"Changed prefix to {_two}",
+                log_text = f"Changed server prefix to {_two}",
                 ctx = ctx,
                 data = server_data,
                 data_file = f"servers/{ctx.guild.id}"
@@ -80,6 +84,121 @@ class Settings(commands.Cog, description=""):
                 ctx = ctx,
                 data = server_data,
                 data_file = f"servers/{ctx.guild.id}"
+            )
+
+
+    # ==================================================
+    # 
+    # ==================================================
+    @commands.command(aliases=["us"], brief="Change user-specific settings!", help="""\
+        __**User Settings**__
+        Change user-specific settings to whatever you like!
+
+        __Viewing Your Settings__
+        `os.user_settings list`
+       
+        __Changing Your Color__
+        `os.user_settings color FFFF00`
+
+        __Changing Your Prefix__
+        `os.user_settings prefix os.`
+        `os.user_settings prefix !`
+        """)
+    async def user_settings(self, ctx, _one="", _two=""):
+        server_data = helpers.get_toml(f"servers/{ctx.guild.id}")
+        if server_data.get("delete_invocation") == True:
+            await helpers.tryDelete(ctx)
+    
+        # ==================================================
+        # If they didnt enter a correct category
+        # Give them the help message
+        # ==================================================
+        if _one not in ["list", "color", "prefix"]:
+            return await helpers.give_output(
+                embed_title = f"the {re.sub(r'_', ' ', inspect.stack()[0][3])} command!",
+                embed_content = self.osts.get_command(inspect.stack()[0][3]).help,
+                ctx = ctx
+            )
+
+        # ==================================================
+        # Yoink user data
+        # ==================================================
+        user_data = helpers.get_toml(f"users/{ctx.author.id}")
+    
+        # ==================================================
+        # If theyre viewing their settings
+        # ==================================================
+        if _one == "list":
+            embed = helpers.make_embed(
+                title = "Alright!",
+                content = "Here are your user settings",
+                ctx = ctx
+            )
+
+            embed.add_field(
+                name = "Color",
+                value = user_data.get("color"),
+                inline = True
+            )
+
+            embed.add_field(
+                name = "Prefix",
+                value = user_data.get("prefix"),
+                inline = True
+            )
+
+            return await helpers.give_output(
+                embed = embed,
+                log_text = f"Listed their user settings",
+                ctx = ctx
+            )
+        
+        # ==================================================
+        # If theyre changing the color
+        # ==================================================
+        if _one == "color":
+            try:
+                _temp = int("0x" + _two, 0)
+            except:
+                return await helpers.give_output(
+                    embed_title = helpers.error_title,
+                    embed_content = "That wasn't a valid color!",
+                    log_text = f"Tried to change their color to an invalid color",
+                    ctx = ctx
+                )
+
+            previous_color = None
+            if user_data.get("color"):
+                previous_color = user_data["color"]
+
+            user_data["color"] = _two
+
+            return await helpers.give_output(
+                embed_title = "Alright!",
+                embed_content = f"Your color has been changed {'to' if not previous_color else f'from {previous_color} to'} {_two}",
+                log_text = f"Changed user color to {_two}",
+                ctx = ctx,
+                data = user_data,
+                data_file = f"users/{ctx.author.id}"
+            )
+
+        # ==================================================
+        # If theyre changing their prefix
+        # ==================================================
+        if _one == "prefix":
+            previous_prefix = None
+            if user_data.get("prefix"):
+                previous_prefix = user_data["prefix"]
+
+            user_data["prefix"] = _two
+
+            return await helpers.give_output(
+                embed_title = "Alright!",
+                embed_content = f"Your prefix has been changed {'to' if not previous_prefix else f'from {previous_prefix} to'} {_two}",
+                log_text = f"Changed user prefix to {_two}",
+                ctx = ctx,
+                data = user_data,
+                data_file = f"users/{ctx.author.id}"
             )
 
 
