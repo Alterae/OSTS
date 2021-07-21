@@ -51,6 +51,33 @@ class Settings(commands.Cog, description=""):
             )
     
         # ==================================================
+        # If theyre listing the servers settings
+        # ==================================================
+        if _one == "list":
+            embed = helpers.make_embed(
+                title = "Alright!",
+                content = "Here are this server's settings!",
+                ctx = ctx
+            )
+
+            embed.add_field(
+                name = "Prefix",
+                value = server_data.get("prefix"),
+                inline = True
+            )
+
+            embed.add_field(
+                name = "Command Message Deletion",
+                value = "Enabled" if server_data.get("delete_invocation") else "Disabled"
+            )
+
+            return await helpers.give_output(
+                embed = embed,
+                log_text = "Listed server settings",
+                ctx = ctx
+            )
+        
+        # ==================================================
         # If theyre changing the bots prefix
         # ==================================================
         if _one == "prefix":
