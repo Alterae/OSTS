@@ -58,6 +58,10 @@ class Halls(commands.Cog, description=""):
 		# If they want to list halls
 		# ==================================================
 		if _action == "list":
+			# ==================================================
+			# If the server doesnt have any halls
+			# Say so
+			# ==================================================
 			if not server_data.get("halls") or server_data.get("halls") == {}:
 				return await helpers.give_output(
 					embed_title = helpers.error_title,
@@ -65,6 +69,9 @@ class Halls(commands.Cog, description=""):
 					ctx = ctx
 				)
 
+			# ==================================================
+			# Make an embed listing every hall
+			# ==================================================
 			embed = helpers.make_embed(
 				title = "Alright!",
 				content = "Here are all of this server's halls!",
@@ -77,6 +84,9 @@ class Halls(commands.Cog, description=""):
 					value = f"**Emoji:** {hall_data['emoji']}\n**Requirement:** {hall_data['requirement']}\n**Channel:** {hall_data['channel']}"
 				)
 
+			# ==================================================
+			# Send it
+			# ==================================================
 			return await helpers.give_output(
 				embed = embed,
 				log_text = f"Listed halls",
@@ -87,6 +97,10 @@ class Halls(commands.Cog, description=""):
 		# If they want to add a hall
 		# ==================================================
 		if _action == "add":
+			# ==================================================
+			# If they didnt enter a hall name
+			# Error
+			# ==================================================
 			if _hall == "":
 				return await helpers.give_output(
 					embed_title = helpers.error_title,
@@ -97,6 +111,9 @@ class Halls(commands.Cog, description=""):
 			if not server_data.get("halls"):
 				server_data["halls"] = {}
 
+			# ==================================================
+			# Create the hall with default values
+			# ==================================================
 			server_data["halls"][_hall] = {
 				"emoji": None,
 				"requirement": 4,
@@ -108,6 +125,9 @@ class Halls(commands.Cog, description=""):
 				"messages": []
 			}
 
+			# ==================================================
+			# Make an embed displaying all the hall info
+			# ==================================================
 			embed = helpers.make_embed(
 				title = helpers.success_title,
 				content = f"Successfully added the hall of {_hall}!",
@@ -121,6 +141,9 @@ class Halls(commands.Cog, description=""):
 					inline = True
 				)
 
+			# ==================================================
+			# Send it
+			# ==================================================
 			return await helpers.give_output(
 				embed = embed,
 				log_text = f"Created the hall of {_hall}",
@@ -133,6 +156,10 @@ class Halls(commands.Cog, description=""):
 		# If they want to edit a hall
 		# ==================================================
 		if _action == "edit":
+			# ==================================================
+			# If the server doesnt have any halls
+			# Say so
+			# ==================================================
 			if not server_data.get("halls") or server_data.get("halls") == {}:
 				return await helpers.give_output(
 					embed_title = helpers.error_title,
@@ -140,6 +167,10 @@ class Halls(commands.Cog, description=""):
 					ctx = ctx
 				)
 
+			# ==================================================
+			# If the given hall isnt in the servers hall list
+			# Say so
+			# ==================================================
 			if not _hall in server_data["halls"].keys():
 				return await helpers.give_output(
 					embed_title = helpers.error_title,
@@ -147,6 +178,10 @@ class Halls(commands.Cog, description=""):
 					ctx = ctx
 				)
 
+			# ==================================================
+			# If they didnt give anything to edit
+			# Just give them the halls information
+			# ==================================================
 			if _item == "":
 				embed = helpers.make_embed(
 					title = helpers.success_title,
@@ -167,6 +202,10 @@ class Halls(commands.Cog, description=""):
 					ctx = ctx
 				)
 
+			# ==================================================
+			# If the item they gave to edit isnt a valid item
+			# Say so
+			# ==================================================
 			if _item not in items:
 				return await helpers.give_output(
 					embed_title = helpers.error_title,
@@ -174,6 +213,10 @@ class Halls(commands.Cog, description=""):
 					ctx = ctx
 				)
 
+			# ==================================================
+			# If they didnt give a proper value for the given item
+			# Say so
+			# ==================================================
 			if _item != "proxied" and _value == "":
 				return await helpers.give_output(
 					embed_title = helpers.error_title,
@@ -181,6 +224,10 @@ class Halls(commands.Cog, description=""):
 					ctx = ctx
 				)
 
+			# ==================================================
+			# If the item they gave is one of the formatting ones
+			# Just set the value and output, nice and ez
+			# ==================================================
 			if _item in ["format", "announcement", "removal announcement", "removal_announcement"]:
 				_item = _item.replace("_", " ")
 
@@ -195,11 +242,21 @@ class Halls(commands.Cog, description=""):
 					data_file = f"servers/{ctx.guild.id}"
 				)
 
+			# ==================================================
+			# If the item they gave is the emoji
+			# Validate the emoji by reacting to the message
+			# Set data
+			# ==================================================
 			# if _item == "emoji":
 				# Try to react to the original message with the emoji
 				# If it works, cool
 				# If it fails, its an invalid emoji
 
+			# ==================================================
+			# If the item they gave is the requirement
+			# Check if its a valid integer
+			# Set data
+			# ==================================================
 			if _item == "requirement":
 				try:
 					_value = int(_value)
@@ -221,11 +278,20 @@ class Halls(commands.Cog, description=""):
 					data_file = f"servers/{ctx.guild.id}"
 				)
 
+			# ==================================================
+			# If the item they gave is the channel
+			# Try to fetch the channel to validate it exists
+			# Set data
+			# ==================================================
 			# if _item == "channel":
 				# Try to get the channel by id
 				# If it works, cool
 				# If it fails, its an invalid channel
 
+			# ==================================================
+			# If the item they gave is the proxied item
+			# Just toggle it
+			# ==================================================
 			if _item == "proxied":
 				server_data["halls"][_hall][_item] = not server_data["halls"][_hall][_item]
 
