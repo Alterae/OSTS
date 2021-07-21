@@ -12,7 +12,6 @@ class Settings(commands.Cog, description=""):
         self.osts = bot
         self.cog_name = "Settings"
         self.data = helpers.get_toml("data")
-        prefix = self.osts.command_prefix
 
     # ==================================================
     # Unload Event
