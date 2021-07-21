@@ -87,9 +87,9 @@ def make_embed(
     # ==================================================
     # Grab user color if it exists, otherwise use default
     # ==================================================
-    user_data = get_toml(ctx.author.id)
+    user_data = get_toml(f"users/{ctx.author.id}")
     if user_data.get("color"):
-        color = user_data.get("color")
+        color = int("0x" + user_data.get("color"), 0)
     else:
         color = 0xFFFF00
 
