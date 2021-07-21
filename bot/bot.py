@@ -10,7 +10,10 @@ import re
 # ==================================================
 def get_prefix(client, message):
     server_data = helpers.get_toml(f"servers/{message.guild.id}")
-    if server_data.get("prefix"):
+    user_data = helpers.get_toml(f"users/{message.author.id}")
+    if user_data.get("prefix"):
+        return user_data["prefix"]
+    elif server_data.get("prefix"):
         return server_data["prefix"]
     else:
         return "os."
