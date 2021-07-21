@@ -22,10 +22,25 @@ class Halls(commands.Cog, description=""):
 	# ==================================================
 	# 
 	# ==================================================
-	@commands.command(brief="", help="""\
-		help
+	@commands.command(brief="Add, edit, list, and remove halls!", help="""\
+		__**Halls**__
+		Add, edit, list, or remove halls!
+
+		__Listing Halls__
+		`[prefix]halls list`
+
+		__Adding Halls__
+		`[prefix]halls add Fame`
+		`[prefix]halls add Shame`
+
+		__Editing Halls__
+		`[prefix]halls edit Fame requirement 5`
+		`[prefix]halls edit Fame format [author]: [content]`
+
+		__Removing Halls__
+		`[prefix]halls remove Fame`
 		""")
-	async def halls(self, ctx, _action="", _hall="", _item="", _value=""):
+	async def halls(self, ctx, _action="", _hall="", _item="", *, _value=""):
 		server_data = helpers.get_toml(f"servers/{ctx.guild.id}")
 		if server_data.get("delete_invocation") == True:
 			await helpers.tryDelete(ctx)
