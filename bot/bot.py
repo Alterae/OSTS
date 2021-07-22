@@ -9,7 +9,7 @@ import re
 # Getting prefixes per-server
 # ==================================================
 def get_prefix(client, message):
-    try:
+    if message.channel.type not in ["private", "group"]:
         server_data = helpers.get_toml(f"servers/{message.guild.id}")
         user_data = helpers.get_toml(f"users/{message.author.id}")
         if user_data.get("prefix"):
@@ -18,8 +18,13 @@ def get_prefix(client, message):
             return server_data["prefix"]
         else:
             return "os."
-    except:
-        return "os."
+    else:
+        user_data = helpers.get_toml(f"users/{message.author.id}")
+        if user_data.get("prefix"):
+            return user_data["prefix"]
+        else:
+            return "os."
+        
 
 # ==================================================
 # Clear the console
