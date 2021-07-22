@@ -97,7 +97,7 @@ class Halls(commands.Cog, description=""):
 			if not server_data["halls"][hall]["proxied"]:
 				hall_message = re.sub(r"\[author\]", original_message.author.name, server_data["halls"][hall]["format"])
 				hall_message = re.sub(r"\[message\]", original_message.content, hall_message)
-				hall_message = re.sub(r"\[attachments\]", "\n".join([attachment.url for attachment in original_message.attachments]), hall_message)
+				hall_message = re.sub(r"\[attachments\]", "\n".join([(f"|| {attachment.url} ||" if "SPOILER_" in attachment.url else attachment.url) for attachment in original_message.attachments]), hall_message)
 				hall_channel = self.osts.get_channel(int(server_data["halls"][hall]["channel"][2:-1]))
 				hall_message_obj = await hall_channel.send(hall_message)
 			# else:
