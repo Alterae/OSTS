@@ -37,6 +37,7 @@ class Settings(commands.Cog, description=""):
         __Toggling Invocation Deletion__
         `[prefix]server_settings delete_command`
         """)
+    @commands.has_permissions(manage_guild=True)
     async def server_settings(self, ctx, _one="", _two=""):
         server_data = helpers.get_toml(f"servers/{ctx.guild.id}")
         if server_data.get("delete_invocation") == True:
