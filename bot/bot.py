@@ -109,12 +109,14 @@ async def on_command_error(ctx, error):
         # If we find a command that was a close match
         # Add an embed listing close matches
         # ==================================================
-        if len(difflib.get_close_matches(re.match(rf"{osts.command_prefix}(\S+)", ctx.message.content).groups()[0], [command.name for command in osts.commands], cutoff=0.5)) > 0:
-            embed.add_field(
-                name = "Did You Mean...",
-                value = osts.command_prefix + f"\n{osts.command_prefix}".join(difflib.get_close_matches(re.match(rf"{osts.command_prefix}(\S+)", ctx.message.content).groups()[0], [command.name for command in osts.commands], cutoff=0.5)),
-                inline = False
-            )
+        try:
+            if len(difflib.get_close_matches(re.match(rf"{osts.command_prefix}(\S+)", ctx.message.content).groups()[0], [command.name for command in osts.commands], cutoff=0.5)) > 0:
+                embed.add_field(
+                    name = "Did You Mean...",
+                    value = osts.command_prefix + f"\n{osts.command_prefix}".join(difflib.get_close_matches(re.match(rf"{osts.command_prefix}(\S+)", ctx.message.content).groups()[0], [command.name for command in osts.commands], cutoff=0.5)),
+                    inline = False
+                )
+        except: pass
 
         # ==================================================
         # Send output
