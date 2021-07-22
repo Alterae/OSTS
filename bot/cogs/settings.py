@@ -73,6 +73,7 @@ class Settings(commands.Cog, description=""):
             return await helpers.give_output(
                 embed = embed,
                 log_text = "Listed server settings",
+				cog = self.cog_name,
                 ctx = ctx
             )
         
@@ -90,6 +91,7 @@ class Settings(commands.Cog, description=""):
                 embed_content = f"My prefix has been changed from \"{previous_prefix}\" to \"{_two}\"!",
                 log_text = f"Changed server prefix to {_two}",
                 ctx = ctx,
+				cog = self.cog_name,
                 data = server_data,
                 data_file = f"servers/{ctx.guild.id}"
             )
@@ -108,6 +110,7 @@ class Settings(commands.Cog, description=""):
                 embed_content = f"Command deletion has been {'enabled' if server_data['delete_invocation'] else 'disabled'}!",
                 log_text = f"Toggled invocation deletion",
                 ctx = ctx,
+				cog = self.cog_name,
                 data = server_data,
                 data_file = f"servers/{ctx.guild.id}"
             )
@@ -176,6 +179,7 @@ class Settings(commands.Cog, description=""):
             return await helpers.give_output(
                 embed = embed,
                 log_text = f"Listed their user settings",
+				cog = self.cog_name,
                 ctx = ctx
             )
         
@@ -190,6 +194,7 @@ class Settings(commands.Cog, description=""):
                     embed_title = helpers.error_title,
                     embed_content = "That wasn't a valid color!",
                     log_text = f"Tried to change their color to an invalid color",
+                    cog = self.cog_name,
                     ctx = ctx
                 )
 
@@ -204,6 +209,7 @@ class Settings(commands.Cog, description=""):
                 embed_content = f"Your color has been changed {'to' if not previous_color else f'from {previous_color} to'} {_two}",
                 log_text = f"Changed user color to {_two}",
                 ctx = ctx,
+				cog = self.cog_name,
                 data = user_data,
                 data_file = f"users/{ctx.author.id}"
             )
@@ -223,6 +229,7 @@ class Settings(commands.Cog, description=""):
                 embed_content = f"Your prefix has been changed {'to' if not previous_prefix else f'from {previous_prefix} to'} {_two}",
                 log_text = f"Changed user prefix to {_two}",
                 ctx = ctx,
+				cog = self.cog_name,
                 data = user_data,
                 data_file = f"users/{ctx.author.id}"
             )
