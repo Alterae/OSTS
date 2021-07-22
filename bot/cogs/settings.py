@@ -117,7 +117,7 @@ class Settings(commands.Cog, description=""):
 
 
     # ==================================================
-    # 
+    # User settings
     # ==================================================
     @commands.command(aliases=["us"], brief="Change user-specific settings!", help="""\
         __**User Settings**__
