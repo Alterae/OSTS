@@ -28,14 +28,14 @@ class Settings(commands.Cog, description=""):
         Change server-specific settings to whatever you like!
 
         __Viewing Server Settings__
-        `os.server_settings list`
+        `[prefix]server_settings list`
         
         __Changing the Bot's Prefix__
-        `os.server_settings prefix os.`
-        `os.server_settings prefix !`
+        `[prefix]server_settings prefix os.`
+        `[prefix]server_settings prefix !`
 
         __Toggling Invocation Deletion__
-        `os.server_settings delete_command`
+        `[prefix]server_settings delete_command`
         """)
     async def server_settings(self, ctx, _one="", _two=""):
         server_data = helpers.get_toml(f"servers/{ctx.guild.id}")
@@ -45,7 +45,7 @@ class Settings(commands.Cog, description=""):
         if _one not in ["prefix", "delete_command", "list"]:
             return await helpers.give_output(
                 embed_title = f"the {re.sub(r'_', ' ', inspect.stack()[0][3])} command!",
-                embed_content = self.osts.get_command(inspect.stack()[0][3]).help,
+                embed_content = re.sub(r"\[prefix\]", self.osts.command_prefix(self.osts, ctx.message), self.osts.get_command(inspect.stack()[0][3]).help),
                 ctx = ctx
             )
     
@@ -121,14 +121,14 @@ class Settings(commands.Cog, description=""):
         Change user-specific settings to whatever you like!
 
         __Viewing Your Settings__
-        `os.user_settings list`
+        `[prefix]user_settings list`
        
         __Changing Your Color__
-        `os.user_settings color FFFF00`
+        `[prefix]user_settings color FFFF00`
 
         __Changing Your Prefix__
-        `os.user_settings prefix os.`
-        `os.user_settings prefix !`
+        `[prefix]user_settings prefix os.`
+        `[prefix]user_settings prefix !`
         """)
     async def user_settings(self, ctx, _one="", _two=""):
         server_data = helpers.get_toml(f"servers/{ctx.guild.id}")
@@ -142,7 +142,7 @@ class Settings(commands.Cog, description=""):
         if _one not in ["list", "color", "prefix"]:
             return await helpers.give_output(
                 embed_title = f"the {re.sub(r'_', ' ', inspect.stack()[0][3])} command!",
-                embed_content = self.osts.get_command(inspect.stack()[0][3]).help,
+                embed_content = re.sub(r"\[prefix\]", self.osts.command_prefix(self.osts, ctx.message), self.osts.get_command(inspect.stack()[0][3]).help),
                 ctx = ctx
             )
 
