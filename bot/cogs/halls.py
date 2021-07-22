@@ -292,6 +292,16 @@ class Halls(commands.Cog, description=""):
 			)
 
 		# ==================================================
+		# Check if they have manage guild permissions
+		# ==================================================
+		if not ctx.author.guild_permissions.manage_guild:
+			return await helpers.give_output(
+				embed_title = helpers.error_title,
+				embed_content = "You don't have permission for this!\nOnly users with the manage guild permission can do that.",
+				ctx = ctx
+			)
+
+		# ==================================================
 		# If they want to add a hall
 		# ==================================================
 		if _action == "add":
