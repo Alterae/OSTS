@@ -48,7 +48,7 @@ class Halls(commands.Cog, description=""):
 		if _action not in ["list", "edit", "add", "remove"]:
 			return await helpers.give_output(
 				embed_title = f"the {re.sub(r'_', ' ', inspect.stack()[0][3])} command!",
-				embed_content = re.sub(r"\[prefix\]", self.osts.command_prefix, self.osts.get_command(inspect.stack()[0][3]).help),
+				embed_content = re.sub(r"\[prefix\]", self.osts.command_prefix(self.osts, ctx.message), self.osts.get_command(inspect.stack()[0][3]).help),
 				ctx = ctx
 			)
 
@@ -209,7 +209,7 @@ class Halls(commands.Cog, description=""):
 			if _item not in items:
 				return await helpers.give_output(
 					embed_title = helpers.error_title,
-					embed_content = f"Please give a valid item to edit!\n\nValid items are:\n{'\n'.join(items[:-1])}\nremoval_announcement",
+					embed_content = f"Please give a valid item to edit!\n\nValid items are:\n{helpers.linebreak.join(items[:-1])}\nremoval_announcement",
 					ctx = ctx
 				)
 
@@ -247,10 +247,27 @@ class Halls(commands.Cog, description=""):
 			# Validate the emoji by reacting to the message
 			# Set data
 			# ==================================================
-			# if _item == "emoji":
-				# Try to react to the original message with the emoji
-				# If it works, cool
-				# If it fails, its an invalid emoji
+			if _item == "emoji":
+				try:
+					await ctx.message.add_reaction(_value)
+					await ctx.message.remove_reaction(_value, self.osts.user)
+				except:
+					return await helpers.give_output(
+						embed_title = helpers.error_title,
+						embed_content = f"Please give a valid emoji!",
+						ctx = ctx
+					)
+
+				server_data["halls"][_hall][_item] = [_value]
+
+				return await helpers.give_output(
+					embed_title = helpers.success_title,
+					embed_content = f"Successfully changed the heall of {_hall}'s {_item} to {_value}!",
+					log_text = f"Changed the hall of {_hall}'s {_item}",
+					ctx = ctx,
+					data = server_data,
+					data_file = f"servers/{ctx.guild.id}"
+				)
 
 			# ==================================================
 			# If the item they gave is the requirement
@@ -283,10 +300,26 @@ class Halls(commands.Cog, description=""):
 			# Try to fetch the channel to validate it exists
 			# Set data
 			# ==================================================
-			# if _item == "channel":
-				# Try to get the channel by id
-				# If it works, cool
-				# If it fails, its an invalid channel
+			if _item == "channel":
+				try:
+					channel = ctx.guild.get_channel(int(_value[2:-1]))
+				except:
+					return await helpers.give_output(
+						embed_title = helpers.error_title,
+						embed_content = f"Please give a valid chanenl for the hall!",
+						ctx = ctx
+					)
+
+				server_data["halls"][_hall][_item] = _value
+
+				return await helpers.give_output(
+					embed_title = helpers.success_title,
+					embed_content = f"Successfully changed the hall of {_hall}'s {_item} to {_value}!",
+					log_text = f"Changed the hall of {_hall}'s {_item}",
+					ctx = ctx,
+					data = server_data,
+					data_file = f"servers/{ctx.guild.id}"
+				)	
 
 			# ==================================================
 			# If the item they gave is the proxied item
