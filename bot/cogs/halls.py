@@ -111,7 +111,7 @@ class Halls(commands.Cog, description=""):
 				except:
 					embed = helpers.make_embed(
 						title = helpers.error_title,
-						content = f"You have proxying enabled for the hall of {hall}, but I don't have permission to access and create webhooks for the channel you have set!\nI need permissions, or you can set tell me to put them in a different channael.",
+						content = f"You have proxying enabled for the {hall} hall, but I don't have permission to access and create webhooks for the channel you have set!\nI need permissions, or you can set tell me to put them in a different channael.",
 						ctx = original_message
 					)
 
@@ -328,8 +328,8 @@ class Halls(commands.Cog, description=""):
 				"channel": "None",
 				"format": "**[author]**\n[message]\n\n[attachments]",
 				"proxied": False,
-				"announcement": f"**[author]** was added to the hall of {_hall}!",
-				"removal announcement": f"**[author]** was removed from the hall of {_hall}!",
+				"announcement": f"**[author]** was added to the {_hall}!",
+				"removal announcement": f"**[author]** was removed from the {_hall}!",
 				"messages": []
 			}
 
@@ -338,7 +338,7 @@ class Halls(commands.Cog, description=""):
 			# ==================================================
 			embed = helpers.make_embed(
 				title = helpers.success_title,
-				content = f"Successfully added the hall of {_hall}!",
+				content = f"Successfully added the {_hall} hall!",
 				ctx = ctx
 			)
 
@@ -354,7 +354,7 @@ class Halls(commands.Cog, description=""):
 			# ==================================================
 			return await helpers.give_output(
 				embed = embed,
-				log_text = f"Created the hall of {_hall}",
+				log_text = f"Created the {_hall} hall",
 				ctx = ctx,
 				cog = self.cog_name,
 				data = server_data,
@@ -394,7 +394,7 @@ class Halls(commands.Cog, description=""):
 			if _item == "":
 				embed = helpers.make_embed(
 					title = helpers.success_title,
-					content = f"Here's the hall of {_hall}!",
+					content = f"Here's the {_hall} hall!",
 					ctx = ctx
 				)
 
@@ -407,7 +407,7 @@ class Halls(commands.Cog, description=""):
 
 				return await helpers.give_output(
 					embed = embed,
-					log_text = f"Got information on the hall of {_hall}",
+					log_text = f"Got information on the {_hall} hall",
 					cog = self.cog_name,
 					ctx = ctx
 				)
@@ -445,8 +445,8 @@ class Halls(commands.Cog, description=""):
 
 				return await helpers.give_output(
 					embed_title = helpers.success_title,
-					embed_content = f"Successfully changed the hall of {_hall}'s {_item} to {_value}!",
-					log_text = f"Changed the hall of {_hall}'s {_item}",
+					embed_content = f"Successfully changed the {_hall} hall's {_item} to {_value}!",
+					log_text = f"Changed the {_hall} hall's {_item}",
 					ctx = ctx,
 					cog = self.cog_name,
 					data = server_data,
@@ -474,7 +474,7 @@ class Halls(commands.Cog, description=""):
 				return await helpers.give_output(
 					embed_title = helpers.success_title,
 					embed_content = f"Successfully changed the heall of {_hall}'s {_item} to {_value}!",
-					log_text = f"Changed the hall of {_hall}'s {_item}",
+					log_text = f"Changed the {_hall} hall's {_item}",
 					ctx = ctx,
 					cog = self.cog_name,
 					data = server_data,
@@ -500,8 +500,8 @@ class Halls(commands.Cog, description=""):
 
 				return await helpers.give_output(
 					embed_title = helpers.success_title,
-					embed_content = f"Successfully changed the hall of {_hall}'s {_item} to {_value}!",
-					log_text = f"Changed the hall of {_hall}'s {_item}",
+					embed_content = f"Successfully changed the {_hall} hall's {_item} to {_value}!",
+					log_text = f"Changed the {_hall} hall's {_item}",
 					ctx = ctx,
 					cog = self.cog_name,
 					data = server_data,
@@ -527,8 +527,8 @@ class Halls(commands.Cog, description=""):
 
 				return await helpers.give_output(
 					embed_title = helpers.success_title,
-					embed_content = f"Successfully changed the hall of {_hall}'s {_item} to {_value}!",
-					log_text = f"Changed the hall of {_hall}'s {_item}",
+					embed_content = f"Successfully changed the {_hall} hall's {_item} to {_value}!",
+					log_text = f"Changed the {_hall} hall's {_item}",
 					ctx = ctx,
 					cog = self.cog_name,
 					data = server_data,
@@ -544,8 +544,8 @@ class Halls(commands.Cog, description=""):
 
 				return await helpers.give_output(
 					embed_title = helpers.success_title,
-					embed_content = f"Proxying for the hall of {_hall} has been changed to {server_data['halls'][_hall][_item]}!",
-					log_text = f"Changed the hall of {_hall}'s proxying",
+					embed_content = f"Proxying for the {_hall} hall has been changed to {server_data['halls'][_hall][_item]}!",
+					log_text = f"Changed the {_hall} hall's proxying",
 					ctx = ctx,
 					cog = self.cog_name,
 					data = server_data,
@@ -574,8 +574,8 @@ class Halls(commands.Cog, description=""):
 
 			return await helpers.give_output(
 				embed_title = helpers.success_title,
-				embed_content = f"Removed the hall of {_hall}",
-				log_text = f"Removed the hall of {_hall}",
+				embed_content = f"Removed the {_hall} hall",
+				log_text = f"Removed the {_hall} hall",
 				ctx = ctx,
 				cog = self.cog_name,
 				data = server_data,
