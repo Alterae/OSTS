@@ -152,7 +152,14 @@ async def give_output(
     # ==================================================
     # Send the embed
     # ==================================================
-    await ctx.send(embed = embed)
+    try:
+        await ctx.send(embed = embed)
+    except discord.Forbidden:
+        return log(
+            text = "Didn't have permission to send a message",
+            cog = cog,
+            ctx = ctx
+        )
 
     # ==================================================
     # Output to console if log text given
