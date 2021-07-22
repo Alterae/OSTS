@@ -23,8 +23,8 @@ class General(commands.Cog, description="General commands and utilities!"):
 	# ==================================================
 	# Choose command
 	# ==================================================
-	@commands.command(brief="", help="""\
-		__Choosing__
+	@commands.command(brief="I'll make a choice for you!", help="""\
+		__**Choosing**__
 		Have me choose from a list of comma seperated values for you!
 
 		`[prefix]choose option one, option two, option three`
@@ -50,6 +50,72 @@ class General(commands.Cog, description="General commands and utilities!"):
 			ctx = ctx,
 			cog = self.cog_name
 		)
+
+
+	# ==================================================
+	# Roll command
+	# ==================================================
+	@commands.command(brief="Roll some die!", help="""\
+		__**Rolling**__
+		Rolling dice, D&D style!
+
+		__Basics__
+		`[prefix]roll 1d20` - rolls 1 dice with 20 sides
+		`[prefix]roll 5d6` - rolls 5 dice with 6 sides
+
+		__Modifiers__
+		`[prefix]roll 1d20+5` - rolls a dice with 20 sides, then adds 5
+		`[prefix]roll 5d6+1` - rolls 5 dice with 6 sides, then adds 1 to the total
+		""")
+	async def roll(self, ctx, _one=""):
+		server_data = helpers.get_toml(f"servers/{ctx.guild.id}")
+		if server_data.get("delete_invocation") == True:
+			await helpers.tryDelete(ctx)
+	
+		if _one == "":
+			return await helpers.give_output(
+				embed_title = f"the {re.sub(r'_', ' ', inspect.stack()[0][3])} command!",
+				embed_content = re.sub(r"\[prefix\]", self.osts.command_prefix, self.osts.get_command(inspect.stack()[0][3]).help),
+				ctx = ctx
+			)
+	
+		try:
+			amount = _one.split("d")[0]
+			size = _one.split("d")[1]
+			mod = 0
+			if "+" in size:
+				modifier = size.split("+")[1]
+				size = size.split("+")[0]
+		except:
+			return await helpers.give_output(
+				embed_title = helpers.error_title,
+				embed_content = "Please give a valid dice to roll!",
+				ctx = ctx
+			)
+
+		rolls = []
+
+		for i in range(amount):
+			rolls.append(random.randint(1, size))
+
+		embed = helpers.make_embed(
+			title = f"Rolled {amount}d{size}{f'+{mod}' if mod != 0 else ''}",
+			content = ", ".join(rolls),
+			ctx = ctx
+		)
+
+		embed.add_field(
+			name = "Total",
+			value = sum(rolls) + mod
+		)
+
+		return await helpers.give_output(
+			embed = embed,
+			log_text = f"Rolled {amount}d{size}{f'+{mod}' if mod != 0 else ''}",
+			cog = self.cog_name,
+			ctx = ctx
+		)
+
 
 
 def setup(bot):
