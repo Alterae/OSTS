@@ -91,6 +91,8 @@ class Halls(commands.Cog, description=""):
 			announcement_message = re.sub(r"\[channel\]", original_message.channel.name, announcement_message)
 			await original_message.channel.send(announcement_message)
 
+			hall_channel = self.osts.get_channel(int(server_data["halls"][hall]["channel"][2:-1]))
+		
 			# ==================================================
 			# Send the message in the hall w/o proxy
 			# ==================================================
@@ -98,10 +100,48 @@ class Halls(commands.Cog, description=""):
 				hall_message = re.sub(r"\[author\]", original_message.author.name, server_data["halls"][hall]["format"])
 				hall_message = re.sub(r"\[message\]", original_message.content, hall_message)
 				hall_message = re.sub(r"\[attachments\]", "\n".join([(f"|| {attachment.url} ||" if "SPOILER_" in attachment.url else attachment.url) for attachment in original_message.attachments]), hall_message)
-				hall_channel = self.osts.get_channel(int(server_data["halls"][hall]["channel"][2:-1]))
 				hall_message_obj = await hall_channel.send(hall_message)
-			# else:
-				# Do proxy stuff
+			else:
+				# ==================================================
+				# Try to get channel webhooks
+				# Error if missing permissions
+				# ==================================================
+				try:
+					channel_webhooks = await hall_channel.webhooks()
+				except:
+					embed = helpers.make_embed(
+						title = helpers.error_title,
+						content = f"You have proxying enabled for the hall of {hall}, but I don't have permission to access and create webhooks for the channel you have set!\nI need permissions, or you can set tell me to put them in a different channael.",
+						ctx = original_message
+					)
+
+					await original_message.channel.send(embed=embed)
+
+				# ==================================================
+				# Check for a webhook, create one if it doesnt exist
+				# ==================================================
+				has_webhook = False
+				for _webhook in channel_webhooks:
+					if _webhook.user.name == self.osts.user.name:
+						has_webhook = True
+						webhook = _webhook
+
+				if not has_webhook:
+					webhook = await hall_channel.create_webhook(name="OSTS Webhook")
+
+				# ==================================================
+				# Create an array of files
+				# ==================================================
+				files = [await attch.to_file() for attch in original_message.attachments]
+
+				# ==================================================
+				# Try to send the message
+				# If it fails (files too big), send files as urls
+				# ==================================================
+				try:
+					hall_message_obj = await webhook.send(original_message.content, username=original_message.author.name, avatar_url=original_message.author.avatar_url, files=files, wait=True)
+				except:
+					hall_message_obj = await webhook.send(original_message.content + "\n\n" + "\n".join([attch.url for attch in original_message.attachments]), username=original_message.author.name, avatar_url=original_message.author.avatar_url, wait=True)
 
 			# ==================================================
 			# Add the message to the channels message list
