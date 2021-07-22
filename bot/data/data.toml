@@ -1,3 +1,4 @@
 cogs = [
-    "cogs.settings"
+    "cogs.settings",
+    "cogs.halls"
 ]
