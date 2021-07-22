@@ -48,13 +48,13 @@ def set_json(file, data):
 # ==================================================
 def get_toml(file):
     try:
-        with open(f"./data/{file}.toml", "r") as data_file:
+        with open(f"./data/{file}.toml", "r", encoding="utf-8") as data_file:
             return toml.loads(data_file.read())
     except IOError:
         return {}
 
 def set_toml(file, data):
-    with open(f"./data/{file}.toml", "w+") as data_file:
+    with open(f"./data/{file}.toml", "w+", encoding="utf-8") as data_file:
         return data_file.write(toml.dumps(data))
 
 
