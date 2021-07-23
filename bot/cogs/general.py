@@ -37,7 +37,7 @@ class General(commands.Cog, description="General commands and utilities!"):
 		if _one == "" or len(_one.split(", ")) == 1:
 			return await helpers.give_output(
 				embed_title = f"the {re.sub(r'_', ' ', inspect.stack()[0][3])} command!",
-				embed_content = re.sub(r"\[prefix\]", self.osts.command_prefix, self.osts.get_command(inspect.stack()[0][3]).help),
+				embed_content = re.sub(r"\[prefix\]", self.osts.command_prefix(self.osts, ctx.message), self.osts.get_command(inspect.stack()[0][3]).help),
 				ctx = ctx
 			)
 	
@@ -75,17 +75,18 @@ class General(commands.Cog, description="General commands and utilities!"):
 		if _one == "":
 			return await helpers.give_output(
 				embed_title = f"the {re.sub(r'_', ' ', inspect.stack()[0][3])} command!",
-				embed_content = re.sub(r"\[prefix\]", self.osts.command_prefix, self.osts.get_command(inspect.stack()[0][3]).help),
+				embed_content = re.sub(r"\[prefix\]", self.osts.command_prefix(self.osts, ctx.message), self.osts.get_command(inspect.stack()[0][3]).help),
 				ctx = ctx
 			)
 	
 		try:
-			amount = _one.split("d")[0]
+			amount = int(_one.split("d")[0])
 			size = _one.split("d")[1]
 			mod = 0
 			if "+" in size:
-				modifier = size.split("+")[1]
-				size = size.split("+")[0]
+				modifier = int(size.split("+")[1])
+				size = int(size.split("+")[0])
+			size = int(size)
 		except:
 			return await helpers.give_output(
 				embed_title = helpers.error_title,
@@ -100,7 +101,7 @@ class General(commands.Cog, description="General commands and utilities!"):
 
 		embed = helpers.make_embed(
 			title = f"Rolled {amount}d{size}{f'+{mod}' if mod != 0 else ''}",
-			content = ", ".join(rolls),
+			content = ", ".join([str(roll) for roll in rolls]) if len(", ".join([str(roll) for roll in rolls])) < 4096 else "Rolls too big to display!",
 			ctx = ctx
 		)
 
