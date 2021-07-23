@@ -117,6 +117,26 @@ class General(commands.Cog, description="General commands and utilities!"):
 		)
 
 
+	# ==================================================
+	# 
+	# ==================================================
+	@commands.command(brief="Invite me to your server!", help="""\
+		__**Getting an Invite**__
+		`[prefix]invite`
+		""")
+	async def invite(self, ctx, _one=""):
+		server_data = helpers.get_toml(f"servers/{ctx.guild.id}")
+		if server_data.get("delete_invocation") == True:
+			await helpers.tryDelete(ctx)
+	
+		return await helpers.give_output(
+			embed_title = helpers.success_title,
+			embed_content = f"https://discord.com/oauth2/authorize?client_id=651246752954974229&permissions=8&scope=bot",
+			log_text = "Got my invite link",
+			ctx = ctx,
+			cog = self.cog_name
+		)
+
 
 def setup(bot):
 	helpers.log(text="Loaded", cog="General")
