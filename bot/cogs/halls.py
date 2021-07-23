@@ -183,7 +183,7 @@ class Halls(commands.Cog, description=""):
 			for i in range(len(server_data["halls"][hall]["messages"])):
 				if server_data["halls"][hall]["messages"][i]["original message id"] == original_message.id:
 					hall_message_id = server_data["halls"][hall]["messages"][i]["hall message id"]
-					author_message_id = server_data["halls"][hall]["messages"][i]["author id"]
+					author_id = server_data["halls"][hall]["messages"][i]["author id"]
 					server_data["halls"][hall]["messages"].pop(i)
 					break
 
