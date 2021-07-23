@@ -119,7 +119,7 @@ class General(commands.Cog, description="General commands and utilities!"):
 
 
 	# ==================================================
-	# 
+	# Invite command
 	# ==================================================
 	@commands.command(brief="Invite me to your server!", help="""\
 		__**Getting an Invite**__
@@ -137,6 +137,53 @@ class General(commands.Cog, description="General commands and utilities!"):
 			ctx = ctx,
 			cog = self.cog_name
 		)
+
+
+	# ==================================================
+	# Help command
+	# ==================================================
+	@commands.command(brief="", help="""\
+		help
+		""")
+	async def help(self, ctx, _one=""):
+		server_data = helpers.get_toml(f"servers/{ctx.guild.id}")
+		if server_data.get("delete_invocation") == True:
+			await helpers.tryDelete(ctx)
+	
+		if _one == "":
+			embed = helpers.make_embed(
+				title = "Here are all of my cogs and commands",
+				content = f"`{self.osts.command_prefix(self.osts, ctx.message)}help [command]` for more detail information!",
+				ctx = ctx
+			)
+
+			for cog in self.osts.cogs:
+				cog_commands = self.osts.cogs[cog].walk_commands()
+				valid_commands = list(filter(lambda c: (c.enabled and not c.hidden), cog_commands))
+				embed.add_field(
+					name = f"__**{cog}**__",
+					value = "\n".join([
+						f"**{self.osts.command_prefix(self.osts, ctx.message)}{command.name} ** - {command.short_doc}" for command in valid_commands
+					]),
+					inline = False
+				)
+			
+			return await helpers.give_output(
+				embed = embed,
+				log_text = f"Got help",
+				cog = self.cog_name,
+				ctx = ctx
+			)
+	
+		if _one in [command.name for command in self.osts.commands]:
+			command = self.osts.get_command(_one)
+			return await helpers.give_output(
+				embed_title = f"The {command.name} Command",
+				embed_content = re.sub(r"\[prefix\]", self.osts.command_prefix(self.osts, ctx.message), command.help),
+				log_text = f"Got help for the {command.name} command",
+				ctx = ctx,
+				cog = self.cog_name
+			)
 
 
 def setup(bot):

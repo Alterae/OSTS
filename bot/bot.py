@@ -38,9 +38,9 @@ data = helpers.get_toml("data")
 cogs = data["cogs"]
 
 # ==================================================
-# TODO: Remove default help command
+# Remove default help command
 # ==================================================
-# osts.remove_command("help")
+osts.remove_command("help")
 
 # ==================================================
 # Load all cogs
