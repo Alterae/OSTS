@@ -75,7 +75,7 @@ class Halls(commands.Cog, description=""):
 		# ==================================================
 		# If the hall doesnt have a channel set, return
 		# ==================================================
-		if hall_data["channel"] == "":
+		if hall_data["channel"] == "None":
 			return False
 
 		# ==================================================
@@ -227,12 +227,12 @@ class Halls(commands.Cog, description=""):
 		`[prefix]halls list`
 
 		__Adding Halls__
-		`[prefix]halls add Fame`
-		`[prefix]halls add Shame`
+		`[prefix]halls add "Hall of Fame"`
+		`[prefix]halls add "Hall of Shame"`
 
 		__Editing Halls__
-		`[prefix]halls edit Fame requirement 5`
-		`[prefix]halls edit Fame format [author]: [content]`
+		`[prefix]halls edit "Hall of Fame" requirement 5`
+		`[prefix]halls edit "Hall of Fame" Fame format [author]: [content]`
 
 		__Removing Halls__
 		`[prefix]halls remove Fame`
