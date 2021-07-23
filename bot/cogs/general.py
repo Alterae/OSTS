@@ -20,6 +20,21 @@ class General(commands.Cog, description="General commands and utilities!"):
 		helpers.log(text="Unloaded", cog=self.cog_name)
 
 
+	@commands.Cog.listener()
+	async def on_message(self, message):
+		if message.author.bot: return
+
+		for item in ["what is my prefix", "whats my prefix", "what's my prefix"]:
+			if item in message.content.lower():
+				embed = helpers.make_embed(
+					title = "Here you go!",
+					content = f"Your prefix is {self.osts.command_prefix(self.osts, message)}",
+					ctx = message
+				)
+
+				await message.channel.send(embed=embed)
+	
+	
 	# ==================================================
 	# Choose command
 	# ==================================================
