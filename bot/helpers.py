@@ -19,7 +19,10 @@ linebreak = "\n"
 # Clearing console
 # ==================================================
 def clear():
-    return os.system("cls")
+    if os.name == "nt":
+        return os.system("cls")
+    else:
+        return os.system("clear")
 
 
 # ==================================================
