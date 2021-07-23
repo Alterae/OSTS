@@ -143,7 +143,11 @@ class General(commands.Cog, description="General commands and utilities!"):
 	# Help command
 	# ==================================================
 	@commands.command(brief="", help="""\
-		help
+		__**Getting Help**__
+		It's a help command, it's about as simple as it gets.
+
+		`[prefix]help`
+		`[prefix]help halls`
 		""")
 	async def help(self, ctx, _one=""):
 		server_data = helpers.get_toml(f"servers/{ctx.guild.id}")
