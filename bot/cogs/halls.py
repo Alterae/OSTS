@@ -110,7 +110,7 @@ class Halls(commands.Cog, description=""):
 					channel_webhooks = await hall_channel.webhooks()
 				except:
 					embed = helpers.make_embed(
-						title = helpers.error_title,
+						title = helpers.error_title(ctx),
 						content = f"You have proxying enabled for the {hall} hall, but I don't have permission to access and create webhooks for the channel you have set!\nI need permissions, or you can set tell me to put them in a different channael.",
 						ctx = original_message
 					)
@@ -261,7 +261,7 @@ class Halls(commands.Cog, description=""):
 			# ==================================================
 			if not server_data.get("halls") or server_data.get("halls") == {}:
 				return await helpers.give_output(
-					embed_title = helpers.error_title,
+					embed_title = helpers.error_title(ctx),
 					embed_content = f"This server doesn't have any halls!\nAdd some with `{self.osts.command_prefix(self.osts, ctx.message)}halls add`",
 					ctx = ctx
 				)
@@ -296,7 +296,7 @@ class Halls(commands.Cog, description=""):
 		# ==================================================
 		if not ctx.author.guild_permissions.manage_guild:
 			return await helpers.give_output(
-				embed_title = helpers.error_title,
+				embed_title = helpers.error_title(ctx),
 				embed_content = "You don't have permission for this!\nOnly users with the manage guild permission can do that.",
 				ctx = ctx
 			)
@@ -311,7 +311,7 @@ class Halls(commands.Cog, description=""):
 			# ==================================================
 			if _hall == "":
 				return await helpers.give_output(
-					embed_title = helpers.error_title,
+					embed_title = helpers.error_title(ctx),
 					embed_content = f"Please enter a hall name!\n`{self.osts.command_prefix(self.osts, ctx.message)}halls add Fame`",
 					ctx = ctx
 				)
@@ -337,7 +337,7 @@ class Halls(commands.Cog, description=""):
 			# Make an embed displaying all the hall info
 			# ==================================================
 			embed = helpers.make_embed(
-				title = helpers.success_title,
+				title = helpers.success_title(ctx),
 				content = f"Successfully added the {_hall} hall!",
 				ctx = ctx
 			)
@@ -371,7 +371,7 @@ class Halls(commands.Cog, description=""):
 			# ==================================================
 			if not server_data.get("halls") or server_data.get("halls") == {}:
 				return await helpers.give_output(
-					embed_title = helpers.error_title,
+					embed_title = helpers.error_title(ctx),
 					embed_content = f"This server doesn't have any halls!\nAdd some with `{self.osts.command_prefix(self.osts, ctx.message)}halls add`",
 					ctx = ctx
 				)
@@ -382,7 +382,7 @@ class Halls(commands.Cog, description=""):
 			# ==================================================
 			if not _hall in server_data["halls"].keys():
 				return await helpers.give_output(
-					embed_title = helpers.error_title,
+					embed_title = helpers.error_title(ctx),
 					embed_content = f"I couldn't find a hall with that name!\nMake sure to use the right capitalization!",
 					ctx = ctx
 				)
@@ -393,7 +393,7 @@ class Halls(commands.Cog, description=""):
 			# ==================================================
 			if _item == "":
 				embed = helpers.make_embed(
-					title = helpers.success_title,
+					title = helpers.success_title(ctx),
 					content = f"Here's the {_hall} hall!",
 					ctx = ctx
 				)
@@ -418,7 +418,7 @@ class Halls(commands.Cog, description=""):
 			# ==================================================
 			if _item not in items:
 				return await helpers.give_output(
-					embed_title = helpers.error_title,
+					embed_title = helpers.error_title(ctx),
 					embed_content = f"Please give a valid item to edit!\n\nValid items are:\n{helpers.linebreak.join(items[:-1])}\nremoval_announcement",
 					ctx = ctx
 				)
@@ -429,7 +429,7 @@ class Halls(commands.Cog, description=""):
 			# ==================================================
 			if _item != "proxied" and _value == "":
 				return await helpers.give_output(
-					embed_title = helpers.error_title,
+					embed_title = helpers.error_title(ctx),
 					embed_content = f"Please give a value for the item you wish to edit!",
 					ctx = ctx
 				)
@@ -444,7 +444,7 @@ class Halls(commands.Cog, description=""):
 				server_data["halls"][_hall][_item] = _value
 
 				return await helpers.give_output(
-					embed_title = helpers.success_title,
+					embed_title = helpers.success_title(ctx),
 					embed_content = f"Successfully changed the {_hall} hall's {_item} to {_value}!",
 					log_text = f"Changed the {_hall} hall's {_item}",
 					ctx = ctx,
@@ -464,7 +464,7 @@ class Halls(commands.Cog, description=""):
 					await ctx.message.remove_reaction(_value, self.osts.user)
 				except:
 					return await helpers.give_output(
-						embed_title = helpers.error_title,
+						embed_title = helpers.error_title(ctx),
 						embed_content = f"Please give a valid emoji!",
 						ctx = ctx
 					)
@@ -472,7 +472,7 @@ class Halls(commands.Cog, description=""):
 				server_data["halls"][_hall][_item] = str(_value)
 
 				return await helpers.give_output(
-					embed_title = helpers.success_title,
+					embed_title = helpers.success_title(ctx),
 					embed_content = f"Successfully changed the heall of {_hall}'s {_item} to {_value}!",
 					log_text = f"Changed the {_hall} hall's {_item}",
 					ctx = ctx,
@@ -491,7 +491,7 @@ class Halls(commands.Cog, description=""):
 					_value = int(_value)
 				except:
 					return await helpers.give_output(
-						embed_title = helpers.error_title,
+						embed_title = helpers.error_title(ctx),
 						embed_content = f"Please give a valid number for the hall requirement!",
 						ctx = ctx
 					)
@@ -499,7 +499,7 @@ class Halls(commands.Cog, description=""):
 				server_data["halls"][_hall][_item] = _value
 
 				return await helpers.give_output(
-					embed_title = helpers.success_title,
+					embed_title = helpers.success_title(ctx),
 					embed_content = f"Successfully changed the {_hall} hall's {_item} to {_value}!",
 					log_text = f"Changed the {_hall} hall's {_item}",
 					ctx = ctx,
@@ -518,7 +518,7 @@ class Halls(commands.Cog, description=""):
 					channel = ctx.guild.get_channel(int(_value[2:-1]))
 				except:
 					return await helpers.give_output(
-						embed_title = helpers.error_title,
+						embed_title = helpers.error_title(ctx),
 						embed_content = f"Please give a valid chanenl for the hall!",
 						ctx = ctx
 					)
@@ -526,7 +526,7 @@ class Halls(commands.Cog, description=""):
 				server_data["halls"][_hall][_item] = _value
 
 				return await helpers.give_output(
-					embed_title = helpers.success_title,
+					embed_title = helpers.success_title(ctx),
 					embed_content = f"Successfully changed the {_hall} hall's {_item} to {_value}!",
 					log_text = f"Changed the {_hall} hall's {_item}",
 					ctx = ctx,
@@ -543,7 +543,7 @@ class Halls(commands.Cog, description=""):
 				server_data["halls"][_hall][_item] = not server_data["halls"][_hall][_item]
 
 				return await helpers.give_output(
-					embed_title = helpers.success_title,
+					embed_title = helpers.success_title(ctx),
 					embed_content = f"Proxying for the {_hall} hall has been changed to {server_data['halls'][_hall][_item]}!",
 					log_text = f"Changed the {_hall} hall's proxying",
 					ctx = ctx,
@@ -558,14 +558,14 @@ class Halls(commands.Cog, description=""):
 		if _action == "remove":
 			if not server_data.get("halls") or server_data.get("halls") == {}:
 				return await helpers.give_output(
-					embed_title = helpers.error_title,
+					embed_title = helpers.error_title(ctx),
 					embed_content = f"This server doesn't have any halls!\nAdd some with `{self.osts.command_prefix(self.osts, ctx.message)}halls add`",
 					ctx = ctx
 				)
 
 			if not _hall in server_data["halls"].keys():
 				return await helpers.give_output(
-					embed_title = helpers.error_title,
+					embed_title = helpers.error_title(ctx),
 					embed_content = f"I couldn't find a hall with that name!\nMake sure to use the right capitalization!",
 					ctx = ctx
 				)
@@ -573,7 +573,7 @@ class Halls(commands.Cog, description=""):
 			del server_data["halls"][_hall]
 
 			return await helpers.give_output(
-				embed_title = helpers.success_title,
+				embed_title = helpers.success_title(ctx),
 				embed_content = f"Removed the {_hall} hall",
 				log_text = f"Removed the {_hall} hall",
 				ctx = ctx,

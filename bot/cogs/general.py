@@ -89,7 +89,7 @@ class General(commands.Cog, description="General commands and utilities!"):
 			size = int(size)
 		except:
 			return await helpers.give_output(
-				embed_title = helpers.error_title,
+				embed_title = helpers.error_title(ctx),
 				embed_content = "Please give a valid dice to roll!",
 				ctx = ctx
 			)
@@ -131,7 +131,7 @@ class General(commands.Cog, description="General commands and utilities!"):
 			await helpers.tryDelete(ctx)
 	
 		return await helpers.give_output(
-			embed_title = helpers.success_title,
+			embed_title = helpers.success_title(ctx),
 			embed_content = f"https://discord.com/oauth2/authorize?client_id=651246752954974229&permissions=8&scope=bot",
 			log_text = "Got my invite link",
 			ctx = ctx,

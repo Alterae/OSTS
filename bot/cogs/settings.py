@@ -55,7 +55,7 @@ class Settings(commands.Cog, description=""):
         # ==================================================
         if _one == "list":
             embed = helpers.make_embed(
-                title = "Alright!",
+                title = helpers.success_title(ctx),
                 content = "Here are this server's settings!",
                 ctx = ctx
             )
@@ -88,7 +88,7 @@ class Settings(commands.Cog, description=""):
             server_data["prefix"] = _two
 
             return await helpers.give_output(
-                embed_title = "Alright!",
+                embed_title = helpers.success_title(ctx),
                 embed_content = f"My prefix has been changed from \"{previous_prefix}\" to \"{_two}\"!",
                 log_text = f"Changed server prefix to {_two}",
                 ctx = ctx,
@@ -107,7 +107,7 @@ class Settings(commands.Cog, description=""):
                 server_data["delete_invocation"] = True
 
             return await helpers.give_output(
-                embed_title = "Alright!",
+                embed_title = helpers.success_title(ctx),
                 embed_content = f"Command deletion has been {'enabled' if server_data['delete_invocation'] else 'disabled'}!",
                 log_text = f"Toggled invocation deletion",
                 ctx = ctx,
@@ -133,8 +133,16 @@ class Settings(commands.Cog, description=""):
         __Changing Your Prefix__
         `[prefix]user_settings prefix os.`
         `[prefix]user_settings prefix !`
+
+        __Changing Your Success Title__
+        This is the title that gets displayed when a command is a success.
+        `[prefix]user_settings success Alright!`
+
+        __Changing Your Error Title__
+        This is the title that gets displayed when a command is a error.
+        `[prefix]user_settings error Whoops!`
         """)
-    async def user_settings(self, ctx, _one="", _two=""):
+    async def user_settings(self, ctx, _one="", *, _two=""):
         server_data = helpers.get_toml(f"servers/{ctx.guild.id}")
         if server_data.get("delete_invocation") == True:
             await helpers.tryDelete(ctx)
@@ -143,7 +151,7 @@ class Settings(commands.Cog, description=""):
         # If they didnt enter a correct category
         # Give them the help message
         # ==================================================
-        if _one not in ["list", "color", "prefix"]:
+        if _one not in ["list", "color", "prefix", "success", "error"]:
             return await helpers.give_output(
                 embed_title = f"the {re.sub(r'_', ' ', inspect.stack()[0][3])} command!",
                 embed_content = re.sub(r"\[prefix\]", self.osts.command_prefix(self.osts, ctx.message), self.osts.get_command(inspect.stack()[0][3]).help),
@@ -160,7 +168,7 @@ class Settings(commands.Cog, description=""):
         # ==================================================
         if _one == "list":
             embed = helpers.make_embed(
-                title = "Alright!",
+                title = helpers.success_title(ctx),
                 content = "Here are your user settings",
                 ctx = ctx
             )
@@ -174,6 +182,18 @@ class Settings(commands.Cog, description=""):
             embed.add_field(
                 name = "Prefix",
                 value = user_data.get("prefix"),
+                inline = True
+            )
+
+            embed.add_field(
+                name = "Success Title",
+                value = user_data.get("success title"),
+                inline = True
+            )
+
+            embed.add_field(
+                name = "Error Title",
+                value = user_data.get("error title"),
                 inline = True
             )
 
@@ -192,7 +212,7 @@ class Settings(commands.Cog, description=""):
                 _temp = int("0x" + _two, 0)
             except:
                 return await helpers.give_output(
-                    embed_title = helpers.error_title,
+                    embed_title = helpers.error_title(ctx),
                     embed_content = "That wasn't a valid color!",
                     log_text = f"Tried to change their color to an invalid color",
                     cog = self.cog_name,
@@ -206,7 +226,7 @@ class Settings(commands.Cog, description=""):
             user_data["color"] = _two
 
             return await helpers.give_output(
-                embed_title = "Alright!",
+                embed_title = helpers.success_title(ctx),
                 embed_content = f"Your color has been changed {'to' if not previous_color else f'from {previous_color} to'} {_two}",
                 log_text = f"Changed user color to {_two}",
                 ctx = ctx,
@@ -224,13 +244,47 @@ class Settings(commands.Cog, description=""):
                 previous_prefix = user_data["prefix"]
 
             user_data["prefix"] = _two
+            if _two == "":
+                user_data["prefix"] = "os."
 
             return await helpers.give_output(
-                embed_title = "Alright!",
+                embed_title = helpers.success_title(ctx),
                 embed_content = f"Your prefix has been changed {'to' if not previous_prefix else f'from {previous_prefix} to'} {_two}",
                 log_text = f"Changed user prefix to {_two}",
                 ctx = ctx,
 				cog = self.cog_name,
+                data = user_data,
+                data_file = f"users/{ctx.author.id}"
+            )
+
+
+        if _one == "success":
+            user_data["success title"] = _two
+            if _two == "":
+                user_data["success title"] = "Alright!"
+
+            return await helpers.give_output(
+                embed_title = helpers.success_title(ctx),
+                embed_content = f"Your success message is now \"{_two}\"!",
+                log_text = f"Changed their user success title to {_two}",
+                ctx = ctx,
+                cog = self.cog_name,
+                data = user_data,
+                data_file = f"users/{ctx.author.id}"
+            )
+
+
+        if _one == "error":
+            user_data["error title"] = _two
+            if _two == "":
+                user_data["error title"] = "Whoops!"
+
+            return await helpers.give_output(
+                embed_title = helpers.success_title(ctx),
+                embed_content = f"Your success message is now \"{_two}\"!",
+                log_text = f"Changed their user error title to {_two}",
+                ctx = ctx,
+                cog = self.cog_name,
                 data = user_data,
                 data_file = f"users/{ctx.author.id}"
             )

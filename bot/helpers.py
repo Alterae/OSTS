@@ -15,6 +15,21 @@ success_title = "Alright!"
 linebreak = "\n"
 
 
+def success_title(ctx):
+    user_data = get_toml(f"users/{ctx.author.id}")
+    if user_data.get("success title"):
+        return user_data["success title"]
+    else:
+        return "Alright!"
+
+def error_title(ctx):
+    user_data = get_toml(f"users/{ctx.author.id}")
+    if user_data.get("error title"):
+        return user_data["error title"]
+    else:
+        return "Whoops!"
+
+
 # ==================================================
 # Clearing console
 # ==================================================
