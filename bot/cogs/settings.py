@@ -249,7 +249,7 @@ class Settings(commands.Cog, description=""):
 
             return await helpers.give_output(
                 embed_title = helpers.success_title(ctx),
-                embed_content = f"Your prefix has been changed {'to' if not previous_prefix else f'from {previous_prefix} to'} {_two}",
+                embed_content = f"Your prefix has been changed {'to' if not previous_prefix else f'from {previous_prefix} to'} {user_data['prefix']}",
                 log_text = f"Changed user prefix to {_two}",
                 ctx = ctx,
 				cog = self.cog_name,
@@ -281,7 +281,7 @@ class Settings(commands.Cog, description=""):
 
             return await helpers.give_output(
                 embed_title = helpers.success_title(ctx),
-                embed_content = f"Your success message is now \"{_two}\"!",
+                embed_content = f"Your error message is now \"{_two}\"!",
                 log_text = f"Changed their user error title to {_two}",
                 ctx = ctx,
                 cog = self.cog_name,
