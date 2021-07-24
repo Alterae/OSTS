@@ -186,6 +186,8 @@ class General(commands.Cog, description="General commands and utilities!"):
 					]),
 					inline = False
 				)
+
+			embed.set_image(url="https://heckscaper.com/aminals/rhode/bottomtext.png")
 			
 			return await helpers.give_output(
 				embed = embed,
