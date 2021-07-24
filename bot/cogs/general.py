@@ -44,23 +44,23 @@ class General(commands.Cog, description="General commands and utilities!"):
 
 		`[prefix]choose option one, option two, option three`
 		""")
-	async def choose(self, ctx, *, _one=""):
+	async def choose(self, ctx, *, _options=""):
 		server_data = helpers.get_toml(f"servers/{ctx.guild.id}")
 		if server_data.get("delete_invocation") == True:
 			await helpers.tryDelete(ctx)
 	
-		if _one == "" or len(_one.split(", ")) == 1:
+		if _options == "" or len(_options.split(", ")) == 1:
 			return await helpers.give_output(
 				embed_title = f"the {re.sub(r'_', ' ', inspect.stack()[0][3])} command!",
 				embed_content = re.sub(r"\[prefix\]", self.osts.command_prefix(self.osts, ctx.message), self.osts.get_command(inspect.stack()[0][3]).help),
 				ctx = ctx
 			)
 	
-		choice = random.choice(_one.split(", "))
+		choice = random.choice(_options.split(", "))
 
 		return await helpers.give_output(
 			embed_title = choice,
-			embed_content = f"Out of {', '.join(_one.split(', ')[:-1])}, and {_one.split(', ')[-1]}, I choose {choice}",
+			embed_content = f"Out of {', '.join(_options.split(', ')[:-1])}, and {_options.split(', ')[-1]}, I choose {choice}",
 			log_text = f"Made a choice",
 			ctx = ctx,
 			cog = self.cog_name
@@ -82,12 +82,12 @@ class General(commands.Cog, description="General commands and utilities!"):
 		`[prefix]roll 1d20+5` - rolls a dice with 20 sides, then adds 5
 		`[prefix]roll 5d6+1` - rolls 5 dice with 6 sides, then adds 1 to the total
 		""")
-	async def roll(self, ctx, _one=""):
+	async def roll(self, ctx, _dice=""):
 		server_data = helpers.get_toml(f"servers/{ctx.guild.id}")
 		if server_data.get("delete_invocation") == True:
 			await helpers.tryDelete(ctx)
 	
-		if _one == "":
+		if _dice == "":
 			return await helpers.give_output(
 				embed_title = f"the {re.sub(r'_', ' ', inspect.stack()[0][3])} command!",
 				embed_content = re.sub(r"\[prefix\]", self.osts.command_prefix(self.osts, ctx.message), self.osts.get_command(inspect.stack()[0][3]).help),
@@ -95,8 +95,8 @@ class General(commands.Cog, description="General commands and utilities!"):
 			)
 	
 		try:
-			amount = int(_one.split("d")[0])
-			size = _one.split("d")[1]
+			amount = int(_dice.split("d")[0])
+			size = _dice.split("d")[1]
 			mod = 0
 			if "+" in size:
 				modifier = int(size.split("+")[1])
@@ -140,7 +140,7 @@ class General(commands.Cog, description="General commands and utilities!"):
 		__**Getting an Invite**__
 		`[prefix]invite`
 		""")
-	async def invite(self, ctx, _one=""):
+	async def invite(self, ctx):
 		server_data = helpers.get_toml(f"servers/{ctx.guild.id}")
 		if server_data.get("delete_invocation") == True:
 			await helpers.tryDelete(ctx)
